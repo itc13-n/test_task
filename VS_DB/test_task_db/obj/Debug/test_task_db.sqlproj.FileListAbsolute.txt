@@ -1,0 +1,6 @@
+C:\Users\Intercepter\source\test_task\test_task\VS_DB\test_task_db\bin\Debug\test_task_db.dacpac
+C:\Users\Intercepter\source\test_task\test_task\VS_DB\test_task_db\bin\Debug\test_task_db.dll
+C:\Users\Intercepter\source\test_task\test_task\VS_DB\test_task_db\bin\Debug\test_task_db.pdb
+C:\Users\Intercepter\source\test_task\test_task\VS_DB\test_task_db\obj\Debug\test_task_db.dll
+C:\Users\Intercepter\source\test_task\test_task\VS_DB\test_task_db\obj\Debug\test_task_db.pdb
+C:\Users\Intercepter\source\test_task\test_task\VS_DB\test_task_db\obj\Debug\test_task_db.sqlprojAssemblyReference.cache
