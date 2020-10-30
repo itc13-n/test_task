@@ -269,23 +269,6 @@ CREATE TABLE [dbo].[CLIENTS_PRODUCTS_LINK] (
 
 
 GO
-PRINT N'Creating [dbo].[CONTACTS]...';
-
-
-GO
-CREATE TABLE [dbo].[CONTACTS] (
-    [ID]         INT           NOT NULL,
-    [FIRST_NAME] NVARCHAR (50) NULL,
-    [LAST_NAME]  NVARCHAR (50) NULL,
-    [TEL]        INT           NULL,
-    [EMAIL]      NVARCHAR (50) NULL,
-    [COMMENT]    NVARCHAR (50) NULL,
-    [CLIENT_ID]  INT           NOT NULL,
-    PRIMARY KEY CLUSTERED ([ID] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[CLIENTS]...';
 
 
@@ -295,6 +278,23 @@ CREATE TABLE [dbo].[CLIENTS] (
     [NAME]         NVARCHAR (50) NOT NULL,
     [PRIOR_CLIENT] BIT           NOT NULL,
     [COMMENT]      NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([ID] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[CONTACTS]...';
+
+
+GO
+CREATE TABLE [dbo].[CONTACTS] (
+    [ID]         INT           IDENTITY (1, 1) NOT NULL,
+    [FIRST_NAME] NVARCHAR (50) NULL,
+    [LAST_NAME]  NVARCHAR (50) NULL,
+    [TEL]        BIGINT        NULL,
+    [EMAIL]      NVARCHAR (50) NULL,
+    [COMMENT]    NVARCHAR (50) NULL,
+    [CLIENT_ID]  INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 
@@ -392,16 +392,7 @@ PRINT N'Creating [dbo].[CK_SUBSC_PERIOD_CONF_Column]...';
 
 GO
 ALTER TABLE [dbo].[PRODUCTS]
-    ADD CONSTRAINT [CK_SUBSC_PERIOD_CONF_Column] CHECK (((SUBSC = 1) and PERIOD IS NOT NULL) or ((SUBSC = 0) and PERIOD IS NULL));
-
-
-GO
-PRINT N'Creating [dbo].[CK_PRODUCTS_Column]...';
-
-
-GO
-ALTER TABLE [dbo].[PRODUCTS]
-    ADD CONSTRAINT [CK_PRODUCTS_Column] CHECK (PERIOD in (1,3,12));
+    ADD CONSTRAINT [CK_SUBSC_PERIOD_CONF_Column] CHECK ([SUBSC]=(1) AND ([PERIOD]=(12) OR [PERIOD]=(3) OR [PERIOD]=(1)) OR ([SUBSC]=(0) AND [PERIOD] IS NULL));
 
 
 GO

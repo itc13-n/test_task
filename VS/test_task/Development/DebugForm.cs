@@ -43,7 +43,7 @@ namespace test_task.Development
 
         private void button1_Click(object sender, EventArgs e)
         {                   
-            List <Manager> managers = DBOperator.GetObjects(new Manager());
+            List <Client> managers = DBOperator.GetObjects(new Client());
             
             listBox1.Items.Clear();
 
@@ -178,22 +178,102 @@ namespace test_task.Development
 
         private void button11_Click(object sender, EventArgs e)
         {
-            Manager m = new Manager();
-            m.Name = richTextBox1.Text;
-            List<Manager> managers = new List<Manager>();
-            managers.Add(m);
-            DBOperator.InsertData<Manager>(managers);
+
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            string[] s = richTextBox1.Text.Split();
-            List<Manager> managers = DBOperator.GetObjects<Manager>(new Manager(), where: $"ID = {s[0]}");
-            if (managers.Count >0)
-            {
+            string[] s = richTextBox1.Text.Split('/');
+            
+            List<Product> DBObjects = new List<Product>();
+            Product o = new Product();
 
-                DBOperator.DeleteObject<Manager>(managers[0], $" ID = {managers[0].ID} ");
+            switch (s[0].ToLower())
+            {
+                case "insert":
+                    o.ID = 48;
+                    o.Name = "TEST";
+                    o.Price = 1.52m;
+                    o.Subscribtion = false;
+                    o.Period = null;
+                    o.Owner = null;
+
+                    DBObjects.Add(o);
+                    DBOperator.InsertData(DBObjects);
+                    break;
+
+                case "delete":
+                    DBObjects = DBOperator.GetObjects(new Product(), where: $"ID = {s[1]}");
+                    if (DBObjects.Count > 0)
+                    {
+                        DBOperator.DeleteObject(DBObjects[0], $" ID = {DBObjects[0].ID} ");
+                    }
+                    break;
+
+                case "get":
+                    DBObjects = DBOperator.GetObjects(o, where: $"ID = {s[1]}");
+
+                    listBox2.Items.Clear();
+                    foreach (var item in DBObjects)
+                    {
+                        listBox2.Items.Add(DBObjects[0].ID + " " + DBObjects[0].Name + " " + DBObjects[0].Price + DBObjects[0].Subscribtion + " " + DBObjects[0].Period + " " + DBObjects[0].Owner.ToString());
+                    }
+                    break;
+
+                case "update":
+                    o.ID = 48;
+                    o.Name = "TEST_NEW";
+                    o.Price = 1.52m;
+                    o.Subscribtion = false;
+                    o.Period = null;
+                    o.Owner = null;
+
+                    MessageBox.Show(o.ID + " " + o.Name + " " + o.Price + o.Subscribtion + " " + o.Period + " " + o.Owner.ToString());
+
+                    DBObjects.Add(o);
+                    textBox1.Text = DBOperator.UpdateObject(o).ToString();
+                    break;
+
+                case "contact":
+                    switch (s[1].ToLower())
+                    {
+                        case "insert":
+                            textBox1.Text = DBOperator.InsertContact(new Contact(-2,
+                                                         "Randal",
+                                                          "Zayac",
+                                                          79990007766,
+                                                          "RandalZ@uuu.mm",
+                                                          "",
+                                                          6)).ToString();
+                            break;
+
+                        case "get":
+                            Client client = new Client();
+                            client.ID = 6;
+
+                            Contact contact = DBOperator.GetContact(client);
+
+                            listBox2.Items.Clear();
+                            listBox2.Items.Add(contact.ID.ToString() + " " 
+                                               + contact.FirstName + " " 
+                                               + contact.LastName+ " " 
+                                               + contact.Tel.ToString() + " " 
+                                               + contact.Email + " " 
+                                               + contact.Comment + " "
+                                               + contact.ClientID);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
             }
+            DBObjects.Clear();
+
+
+            
             
         }
     }

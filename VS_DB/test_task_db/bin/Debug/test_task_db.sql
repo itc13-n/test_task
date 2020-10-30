@@ -40,35 +40,6 @@ USE [$(DatabaseName)];
 
 
 GO
-PRINT N'Dropping [dbo].[CK_PRODUCTS_Column]...';
-
-
-GO
-ALTER TABLE [dbo].[PRODUCTS] DROP CONSTRAINT [CK_PRODUCTS_Column];
-
-
-GO
-PRINT N'Creating [dbo].[CK_PRODUCTS_Column]...';
-
-
-GO
-ALTER TABLE [dbo].[PRODUCTS] WITH NOCHECK
-    ADD CONSTRAINT [CK_PRODUCTS_Column] CHECK (PERIOD in (1,3,12));
-
-
-GO
-PRINT N'Checking existing data against newly created constraints';
-
-
-GO
-USE [$(DatabaseName)];
-
-
-GO
-ALTER TABLE [dbo].[PRODUCTS] WITH CHECK CHECK CONSTRAINT [CK_PRODUCTS_Column];
-
-
-GO
 PRINT N'Update complete.';
 
 

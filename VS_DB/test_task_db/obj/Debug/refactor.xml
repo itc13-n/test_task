@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0">
+  <Operation Name="Rename Refactor" Key="b0f3c4de-19af-486f-ace4-dd6b982423bb" ChangeDateTime="10/27/2020 07:47:23" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[MANAGERS].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MANAGERS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="96ec34d7-12d0-4445-84b1-9cb16c0ad764" ChangeDateTime="10/27/2020 07:53:32" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CLIENTS].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="25a1d51e-23ff-4b31-8f7e-240018280934" ChangeDateTime="10/27/2020 07:55:17" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CLIENTS].[STATUS]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="KEY_CLIENT" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ff88ac00-9d21-470a-b3d3-cfe8d97f2aa5" ChangeDateTime="10/27/2020 07:55:48" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CLIENTS].[KEY_CLIENT]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PRIOR_CLIENT" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="693ca8f6-143f-4f83-95d4-71622eae94ee" ChangeDateTime="10/27/2020 07:58:42" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[PRODUCTS].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PRODUCTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="00c11b7c-f414-473e-9ed2-db0d60223b24" ChangeDateTime="10/27/2020 08:14:09" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CK_PRODUCTS_Column]" />
+    <Property Name="ElementType" Value="SqlCheckConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[PRODUCTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[CK_SUBSC-PERIOD_CONF_Column]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="53ecf07a-e727-4f0b-963e-388607a7774e" ChangeDateTime="10/27/2020 08:14:15" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CK_SUBSC-PERIOD_CONF_Column]" />
+    <Property Name="ElementType" Value="SqlCheckConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[PRODUCTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[CK_SUBSC_PERIOD_CONF_Column]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d430b377-8dac-4dc3-a532-6454c176417d" ChangeDateTime="10/27/2020 08:15:34" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CLIENTS_MANAGERS_LINK].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS_MANAGERS_LINK]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c59e4ae0-ecf0-45fe-8b4a-90b292181a13" ChangeDateTime="10/27/2020 08:19:24" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[FK_CLIENTS_MANAGERS_LINK_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS_MANAGERS_LINK]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_CLIENTS_MANAGERS_LINK_MANAGERS]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="17d183d7-ebfd-4989-b643-f23a56f19a42" ChangeDateTime="10/27/2020 08:19:30" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[FK_CLIENTS_MANAGERS_LINK_ToTable_1]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS_MANAGERS_LINK]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_CLIENTS_MANAGERS_LINK_CLIENTS]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="533306da-28ee-4c55-8964-c19daae9bf7f" ChangeDateTime="10/27/2020 08:24:58" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CLIENTS_PRODUCTS_LINK].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS_PRODUCTS_LINK]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ef2e1416-aba0-4304-b247-1f125093be65" ChangeDateTime="10/27/2020 08:26:13" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[FK_CLIENTS_PRODUCTS_LINK_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[CLIENTS_PRODUCTS_LINK]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_CLIENTS_PRODUCTS_LINK_CLIENTS]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c8d21bfd-8bcf-4c3a-97f0-af505268dadc" ChangeDateTime="10/27/2020 08:28:10" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CONTACTS].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CONTACTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8d404ac7-8105-4778-a29e-48e6964eb6e0" ChangeDateTime="10/27/2020 08:28:26" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CONTACTS].[NAME]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CONTACTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FIRST_NAME" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="cd93badf-bfb3-458d-bb7b-657dde1201dc" ChangeDateTime="10/27/2020 08:32:21" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[CONTACTS].[PHONE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CONTACTS]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TEL" />
+  </Operation>
+</Operations>

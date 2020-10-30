@@ -57,7 +57,7 @@ namespace test_task.DB
                 {
                     while (reader.Read())
                     {
-                        outObjects.Add(GetObjectFromReader<T>(type, ref reader));
+                        outObjects.Add(GetObjectFromReader(type, ref reader));
                     }
                 }
 
@@ -107,7 +107,7 @@ namespace test_task.DB
                     table = "CLIENTS";
                     values = "('"
                         + (data[0] as Client).Name + "', " 
-                        + (data[0] as Client).PriorClient +", '" 
+                        + Convert.ToInt32((data[0] as Client).PriorClient) +", '" 
                         + (data[0] as Client).Comment + "')";
                     if (data.Count > 0)
                     {
@@ -126,7 +126,7 @@ namespace test_task.DB
                     values = "('"
                         + (data[0] as Product).Name + "', " 
                         + (data[0] as Product).Price + ", " 
-                        + (data[0] as Product).Subscribtion + ", '" 
+                        + Convert.ToInt32((data[0] as Product).Subscribtion) + ", '" 
                         + (data[0] as Product).Period + "')";
                     if (data.Count > 0)
                     {
@@ -138,6 +138,12 @@ namespace test_task.DB
                                 + (data[k] as Product).Subscribtion + ", " 
                                 + (data[k] as Product).Period + ")";
                         }
+                    }
+
+                    if (!((data[0] as Product).Owner is null))
+                    {
+                        int client_ID = (data[0] as Product).Owner.Value;
+                        Relation(client_ID, data[0] as Product);
                     }
                     break;
                 default:
@@ -174,14 +180,14 @@ namespace test_task.DB
 
             switch (objNew)
             {
-                case Manager m:
+                case Manager _:
                     table = "MANAGERS";
                     set = $"NAME = '{(objNew as Manager).Name}' " +
                         $", COMMENT = '{(objNew as Manager).Comment}' ";
                     where = $"ID = {(objNew as Manager).ID}";
                     break;
 
-                case Client c:
+                case Client _:
                     table = "CLIENTS";
                     set = $"NAME = '{(objNew as Client).Name}' " +
                           $", PRIOR_CLIENT = {Convert.ToInt32((objNew as Client).PriorClient)}" +
@@ -189,13 +195,28 @@ namespace test_task.DB
                     where = $"ID = {(objNew as Client).ID}";
                     break;
 
-                case Product p:
+                case Product _:
+                    string period;
+                    if ((objNew as Product).Period is null)
+                    {
+                        period = "NULL";
+                    }
+                    else
+                    {
+                        period = ""+(objNew as Product).Period.Value.ToString()+ "";
+                    }
                     table = "PRODUCTS";
                     set = $"NAME = '{(objNew as Product).Name}'" +
                           $", PRICE = {(objNew as Product).Price}" +
-                          $", SUBSC = {(objNew as Product).Subscribtion}" +
-                          $", PERIOD = {(objNew as Product).Period}";
+                          $", SUBSC = {Convert.ToInt32((objNew as Product).Subscribtion)}" +
+                           $", PERIOD = " + period;
                     where = $"ID = {(objNew as Product).ID}";
+
+                    if (!((objNew as Product).Owner is null))
+                    {
+                        int client_ID = (objNew as Product).Owner.Value;
+                        Relation(client_ID, objNew as Product);
+                    }
                     break;
 
                 default:
@@ -271,7 +292,7 @@ namespace test_task.DB
         }
 
         
-        public static int Relation<T>(Client client, T relType, bool remove = false)
+        public static int Relation<T>(int client, T relType, bool remove = false)
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
             SqlCommand sqlCmd = new SqlCommand();
@@ -281,14 +302,14 @@ namespace test_task.DB
             {
                 switch (relType)
                 {
-                    case Manager m:
+                    case Manager _:
                         table = "CLIENTS_MANAGERS_LINK";
-                        sqlCmd.CommandText = $"insert into {table} values({(relType as Manager).ID}, {client.ID})";
+                        sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client}); insert into {table} values({(relType as Manager).ID}, {client})";
                         break;
 
-                    case Product p:
+                    case Product _:
                         table = "CLIENTS_PRODUCTS_LINK";
-                        sqlCmd.CommandText = $"insert into {table} values({client.ID}, {(relType as Product).ID})";
+                        sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client}); insert into {table} values({client}, {(relType as Product).ID})";
                         break;
 
                     default:
@@ -299,18 +320,18 @@ namespace test_task.DB
             {
                 switch (relType)
                 {
-                    case Manager m:
+                    case Manager _:
                         table = "CLIENTS_MANAGERS_LINK";
                         break;
 
-                    case Product p:
+                    case Product _:
                         table = "CLIENTS_PRODUCTS_LINK";
                         break;
 
                     default:
                         throw new ArgumentException("Invalid object Type. DELETE (relation) query aborted.");
                 }
-                sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client.ID})";
+                sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client})";
             }
 
             sqlCmd.Connection = cn;
@@ -343,18 +364,18 @@ namespace test_task.DB
             int client_ID = client is null ? contact.ClientID : client.ID;
             
             sqlClearCmd.Connection = cn;
-            sqlClearCmd.CommandText = $"delete from CONTACTS where CLIENT_ID = {client_ID} ";
+            sqlClearCmd.CommandText = $"delete from CONTACTS where CLIENT_ID = {client_ID};";
             
             sqlInsertCmd.Connection = cn;
             sqlInsertCmd.CommandText = "insert into CONTACTS values (" +
-                                        $"'{contact.FirstName}'," +
+                                        $" '{contact.FirstName}'," +
                                         $" '{contact.LastName}' ," +
                                         $"{contact.Tel}," +
                                         $" '{contact.Email}' ," +
                                         $" '{contact.Comment}' ," +
                                         $"{client_ID})";
 
-
+            //"insert into CONTACTS values ( 'Randal', 'Zayac' ,79990007766, 'RandalZ@uuu.mm' , '' ,6)"
             try
             {
                 cn.Open();
@@ -371,7 +392,7 @@ namespace test_task.DB
             }
 
             return rowsAffected;
-        }//untested + empty table
+        }
 
         public static Contact GetContact(Client client)
         {
@@ -379,7 +400,8 @@ namespace test_task.DB
             SqlCommand sqlCmd = new SqlCommand();
             
             sqlCmd.Connection = cn;
-            sqlCmd.CommandText = $"select TOP 1 from (select * from CONTACTS where CLIENT_ID = {client.ID})";
+
+            sqlCmd.CommandText = $"select * from CONTACTS where CLIENT_ID = {client.ID} order by ID offset 0 rows fetch next 1 row only";
 
             Contact contact;
 
@@ -390,10 +412,19 @@ namespace test_task.DB
 
                 if (reader.Read())
                 {
+                    long? tel;
+                    if (reader.IsDBNull(3))
+                    {
+                        tel = null;
+                    }
+                    else
+                    {
+                        tel = reader.GetInt64(3);
+                    }
                     contact = new Contact(reader.GetInt32(0),
                                           reader.GetString(1),
                                           reader.GetString(2),
-                                          reader.GetInt32(3),
+                                          tel,
                                           reader.GetString(4),
                                           reader.GetString(5),
                                           reader.GetInt32(6));
@@ -415,7 +446,7 @@ namespace test_task.DB
             }
 
             return contact;
-        }//untested + empty table
+        }
 
 
         ///<summary>

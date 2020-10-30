@@ -6,7 +6,7 @@
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int Tel { get; set; }
+        public long? Tel { get; set; }
         public string Email { get; set; }
         public string Comment { get; set; }
         public int ClientID { get; set; }
@@ -22,7 +22,7 @@
             this.ClientID = -2;
         }
 
-        public Contact(int id, string firstName, string lastName, int tel, string email, string comment, int clientID)
+        public Contact(int id, string firstName, string lastName, long? tel, string email, string comment, int clientID)
         {
             this.ID = id;
             this.FirstName = firstName;
