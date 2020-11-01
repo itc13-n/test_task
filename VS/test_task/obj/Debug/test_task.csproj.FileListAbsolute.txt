@@ -24,3 +24,5 @@ C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\App.baml
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ShellView.baml
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\test_task.g.resources
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\test_task.Development.DebugForm.resources
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ClientByManagerView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ClientByManagerView.baml

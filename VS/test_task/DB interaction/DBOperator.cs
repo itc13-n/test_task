@@ -8,7 +8,7 @@ using test_task.Classes;
 
 namespace test_task.DB
 {
-    internal static class DBOperator
+    public static class DBOperator
     {
         public static string ConnectionString { get; set; }
 
@@ -64,7 +64,7 @@ namespace test_task.DB
         }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\n" + sqlCmd.CommandText);
             }
             finally
             {
@@ -72,6 +72,56 @@ namespace test_task.DB
             }
 
         return outObjects;
+        }
+
+        public static List<Client> GetClientsByManager(int manager_ID, string select = "CL.*", string where = null, string orderBy = null, string groupBy = null)
+        {
+            List<Client> outObjects = new List<Client>();
+            SqlConnection cn = new SqlConnection(ConnectionString);
+            SqlCommand sqlCmd = new SqlCommand();
+            SqlDataReader reader;
+
+            if (!(orderBy is null))
+            {
+                orderBy = $"order by + {orderBy}";
+            }
+            if (!(groupBy is null))
+            {
+                groupBy = $"group by + {groupBy}";
+            }
+
+            sqlCmd.Connection = cn;
+            sqlCmd.CommandText = $"select {select}" +
+                                $" from CLIENTS CL " +
+                                $"join CLIENTS_MANAGERS_LINK CML on CL.ID = CML.CLIENT_ID " +
+                                $"where MANAGER_ID = {manager_ID} {where}" +
+                                $"{orderBy} " +
+                                $"{groupBy}";
+
+            try
+            {
+                cn.Open();
+                reader = sqlCmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        outObjects.Add(new Client(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2), reader.GetString(3)));
+                    }                             
+                }                                 
+                                                  
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + sqlCmd.CommandText);
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return outObjects;
+            throw new NotImplementedException();
         }
 
         public static int InsertData <T>(List<T> data)
@@ -281,7 +331,7 @@ namespace test_task.DB
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\n" + sqlCmd.CommandText);
             }
             finally
             {
@@ -291,8 +341,15 @@ namespace test_task.DB
             return rowsAffected;
         }
 
-        
-        public static int Relation<T>(int client, T relType, bool remove = false)
+        /// <summary>
+        /// Add/Remove relation between two objects in CLIENTS and MANAGER/PRODUCTS
+        /// </summary>
+        /// <param name="T">Manager/Client/Product</param>
+        /// <param name="client_ID">Client</param>
+        /// <param name="relType">Dummy type for table recognition</param>
+        /// <param name="remove">Remove query executed if true</param>
+        /// <returns>Rows affected by query</returns>
+        public static int Relation<T>(int client_ID, T relType, bool remove = false)
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
             SqlCommand sqlCmd = new SqlCommand();
@@ -304,12 +361,12 @@ namespace test_task.DB
                 {
                     case Manager _:
                         table = "CLIENTS_MANAGERS_LINK";
-                        sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client}); insert into {table} values({(relType as Manager).ID}, {client})";
+                        sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client_ID}); insert into {table} values({(relType as Manager).ID}, {client_ID})";
                         break;
 
                     case Product _:
                         table = "CLIENTS_PRODUCTS_LINK";
-                        sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client}); insert into {table} values({client}, {(relType as Product).ID})";
+                        sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client_ID}); insert into {table} values({client_ID}, {(relType as Product).ID})";
                         break;
 
                     default:
@@ -331,7 +388,7 @@ namespace test_task.DB
                     default:
                         throw new ArgumentException("Invalid object Type. DELETE (relation) query aborted.");
                 }
-                sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client})";
+                sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client_ID}";
             }
 
             sqlCmd.Connection = cn;
@@ -344,7 +401,7 @@ namespace test_task.DB
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\n" + sqlCmd.CommandText);
             }
             finally
             {
@@ -375,7 +432,6 @@ namespace test_task.DB
                                         $" '{contact.Comment}' ," +
                                         $"{client_ID})";
 
-            //"insert into CONTACTS values ( 'Randal', 'Zayac' ,79990007766, 'RandalZ@uuu.mm' , '' ,6)"
             try
             {
                 cn.Open();

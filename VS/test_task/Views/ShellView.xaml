@@ -4,13 +4,105 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:test_task.Views"
+        xmlns:cal ="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
+        Title="" Height="701" Width="951" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Button Content="Button" x:Name="ShowDebug" HorizontalAlignment="Left" Margin="158,30,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="328,30,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="508,30,0,0" VerticalAlignment="Top" Width="75"/>
-        <ListBox HorizontalAlignment="Left" Height="286" Margin="158,55,0,0" VerticalAlignment="Top" Width="425"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
 
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="auto" MinWidth="200"/>
+            <!--2-->
+            <ColumnDefinition Width="5"/>
+
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="auto" MinWidth="200"/>
+            <!--5-->
+            <ColumnDefinition Width="15"/>
+
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="auto"/>
+            <!--2-->
+            <RowDefinition Height="5"/>
+
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="auto"/>
+            <!--5-->
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="*"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        
+        <ComboBox x:Name="MainActions" 
+                  SelectedItem="{Binding Path = SelectedMainAction, Mode=TwoWay}"
+                  cal:Message.Attach="[Event SelectionChanged] = [Action MainSelectionChanged]"
+                  Grid.Column="2" 
+                  Grid.Row="2" 
+                  Grid.ColumnSpan="4">
+        </ComboBox>
+
+        <!--<ComboBox x:Name="ChangeItemActions" 
+                  SelectedItem="{Binding Path = SelectedChangeItem, Mode=TwoWay}"
+                  Grid.Column="2" 
+                  Grid.Row="5">
+        </ComboBox>-->
+
+        <!--<ComboBox x:Name="ContextItemActions" 
+                   SelectedItem="{Binding Path = SelectedContextItem, Mode=TwoWay}"
+                   cal:Message.Attach="[Event SelectionChanged] = [Action ContextSelectionChanged]"
+                  IsEnabled="{Binding Path=CanUseContextItem, Mode=OneWay}"
+              Grid.Column="5" 
+              Grid.Row="5">
+        </ComboBox>-->
+
+        <DataGrid x:Name="DataGridOut"
+                  ItemsSource="{Binding Path = DataOut, Mode=TwoWay}"
+                  Grid.Column="2" 
+                  Grid.ColumnSpan="4" 
+                  Grid.Row="7"
+                  AlternatingRowBackground="LightGray" 
+                  SelectedIndex="{Binding Path=DataOutSelectedIndex, Mode=TwoWay}"
+                  SelectionMode="Single"
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  
+                  cal:Message.Attach="[Event SelectionChanged] = [Action DataGridSelectionChanged]"
+                  />
+
+
+        <ContentControl x:Name="ActiveItem" 
+                        Grid.Row="2" 
+                        Grid.Column="7"
+                        Grid.RowSpan="7">
+        </ContentControl>
+        
+        <StatusBar  Grid.Column="0"
+                    Grid.ColumnSpan="9" 
+                    Grid.Row="9" Background="#acacac">
+            <Button x:Name="ChangeConnectionString" 
+                    MinWidth="100" 
+                    MinHeight="20" 
+                    FontSize="14" 
+                    Margin="53,0,0,0"
+                    >Debug functions</Button>
+        </StatusBar>
+        
     </Grid>
+
+
+
+
 </Window>
+    

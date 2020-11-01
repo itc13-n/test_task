@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="test_task.Views.ClientByManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:test_task.Views"
+             xmlns:cal ="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             MinHeight="300" MinWidth="200"
+             d:DesignHeight="200" d:DesignWidth="100">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="25"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+
+        <TextBlock Grid.Row="1" 
+                   Grid.Column="1"
+                   Grid.ColumnSpan="3" 
+                   Text="Список клиентов для"
+                   TextAlignment="Center"
+                   FontSize="20"/>
+
+        <TextBlock x:Name="SelectedManager_Name"
+                   Grid.Row="3" 
+                   Grid.Column="1"
+                   Grid.ColumnSpan="3"
+                   TextAlignment="Center"
+                   FontSize="20"
+                   FontStyle="Italic"/>
+
+        <ListBox ItemsSource="{Binding Path = ClientsNamesList, Mode=OneWay}"
+                 x:Name="ClientsList" 
+                 Grid.Row="5" 
+                 Grid.Column="1" 
+                 Grid.ColumnSpan="3"
+                 IsTextSearchEnabled="False" 
+                 HorizontalContentAlignment="Center"
+                 FontSize="18"
+                 SelectedIndex="{Binding Path = LBSelectedIndex}"
+                 cal:Message.Attach="[Event SelectionChanged] = [Action LBSelectionChanged]"/>
+        
+        <ContentControl x:Name="ActiveItem"
+                 Grid.Row="5" 
+                 Grid.Column="1"/>
+
+        <Button x:Name="BindClient"
+                Grid.Row ="7"
+                Grid.Column="1"
+                cal:Message.Attach="[Event Click] = [Action BindClientButtonClick]"
+                FontSize="14">
+            Добавить клиента
+        </Button>
+
+        <Button x:Name="RemoveClient"
+                Grid.Row ="7"
+                Grid.Column="3"
+                cal:Message.Attach="[Event Click] = [Action RemoveClientButtonClick]"
+                FontSize="14"
+                IsEnabled="{Binding Path = IsRemoveClientEnabled}">
+            Удалить клиента
+        </Button>
+
+
+    </Grid>
+</UserControl>

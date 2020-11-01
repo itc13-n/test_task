@@ -41,18 +41,6 @@ namespace test_task.Development
              
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {                   
-            List <Client> managers = DBOperator.GetObjects(new Client());
-            
-            listBox1.Items.Clear();
-
-            foreach (var item in managers)
-            {
-                listBox1.Items.Add(item.Name);
-            }
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(richTextBox1.Text))
@@ -73,30 +61,6 @@ namespace test_task.Development
         private void button7_Click(object sender, EventArgs e)
         {
             listBox2.Items.Clear();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            List<Client> clients = DBOperator.GetObjects(new Client());
-
-            listBox1.Items.Clear();
-
-            foreach (var item in clients)
-            {
-                listBox1.Items.Add(item.Name);
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            List<Product> products = DBOperator.GetObjects(new Product());
-
-            listBox1.Items.Clear();
-
-            foreach (var item in products)
-            {
-                listBox1.Items.Add(item.Name);
-            }
         }
 
         private void DebugForm_Load(object sender, EventArgs e)
@@ -173,11 +137,6 @@ namespace test_task.Development
             {
                 textBox1.Text = DBOperator.DirectQuery(richTextBox1.Text).ToString();
             }
-
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
 
         }
 
