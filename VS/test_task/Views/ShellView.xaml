@@ -77,9 +77,8 @@
                   CanUserDeleteRows="False"
                   CanUserAddRows="False"
                   IsReadOnly="True"
-                  
-                  cal:Message.Attach="[Event SelectionChanged] = [Action DataGridSelectionChanged]"
-                  />
+                  SelectedItem="{Binding Path=DataOutSelectedItem, Mode=TwoWay}"
+                  cal:Message.Attach="[Event SelectionChanged] = [Action DataGridSelectionChanged]"/>
 
 
         <ContentControl x:Name="ActiveItem" 

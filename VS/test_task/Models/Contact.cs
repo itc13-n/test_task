@@ -18,7 +18,7 @@ namespace test_task.Classes
             this.ID = -2;
             this.FirstName = "-";
             this.LastName = "-";
-            this.Tel = -2;
+            this.Tel = null;
             this.Email = "@";
             this.Comment = "-";
             this.ClientID = -2;
@@ -51,7 +51,7 @@ namespace test_task.Classes
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
-            throw new InvalidCastException();
+            return Convert.ChangeType(ToString(), conversionType);
         }
 
         public TypeCode GetTypeCode()

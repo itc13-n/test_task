@@ -4,6 +4,7 @@ using test_task.DB;
 using test_task.Views;
 using test_task.Classes;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace test_task.ViewModels
 {
@@ -23,8 +24,6 @@ namespace test_task.ViewModels
 
         #region fields
         private string _selectedMainAction;
-        private string _selectedContextItem;
-        private string _selectedChangeItem;
         private BindableCollection<string> _mainActions;
         private BindableCollection<string> _changeItemActions = new BindableCollection<string>();
         private BindableCollection<string> _contextItemAction = new BindableCollection<string>();
@@ -32,6 +31,7 @@ namespace test_task.ViewModels
         private int _dataOutSelectedIndex;
         private bool _writeToDB = false;
         private bool _canUseContextItem;
+        private object _dataOutSelectedItem;
         #endregion
 
         #region properties
@@ -43,24 +43,6 @@ namespace test_task.ViewModels
                 _selectedMainAction = value;
                 //choosenType = _selectedMainAction;
                 NotifyOfPropertyChange(() => SelectedMainAction);
-            }
-        }
-        public string SelectedContextItem
-        {
-            get => _selectedContextItem;
-            set
-            {
-                _selectedContextItem = value;
-                NotifyOfPropertyChange(() => SelectedContextItem);
-            }
-        }
-        public string SelectedChangeItem
-        {
-            get => _selectedChangeItem;
-            set
-            {
-                _selectedChangeItem = value;
-                NotifyOfPropertyChange(() => SelectedChangeItem);
             }
         }
         public BindableCollection<string> ContextItemActions
@@ -137,6 +119,15 @@ namespace test_task.ViewModels
                 NotifyOfPropertyChange(() => CanUseContextItem);
             }
         }
+        public object DataOutSelectedItem
+        {
+            get => _dataOutSelectedItem;
+            set 
+            {
+                _dataOutSelectedItem = value;
+                NotifyOfPropertyChange(() => DataOutSelectedItem);
+            }
+        }
         #endregion
 
         #region ctors
@@ -179,74 +170,6 @@ namespace test_task.ViewModels
                 //ContextItemActions = new BindableCollection<string>(ShellViewActionsLists.contextActionsProduct);
             }
         }
-         
-        //public void ContextSelectionChanged()
-        //{
-        //    if (SelectedContextItem is null)
-        //    {
-        //        return;
-        //    }
-        //    if (SelectedMainAction == ShellViewActionsLists.mainActions[0]) //managers
-        //    {
-        //        if (SelectedContextItem == ShellViewActionsLists.contextActionsManager[0]) //bind client
-        //        {
-        //            ///////////////////////////////////////////////////
-        //            ActivateItem(null);                              //
-        //            //throw new NotImplementedException("Bind Client");//
-        //            ///////////////////////////////////////////////////
-        //        }
-        //        else if (SelectedContextItem == ShellViewActionsLists.contextActionsManager[1]) //show clients list
-        //        {
-        //            ActivateItem(new ClientByManagerViewModel());
-
-        //        }
-        //    }//managers
-
-        //    else if (SelectedMainAction == ShellViewActionsLists.mainActions[1])//clients
-        //    {
-        //        if (SelectedContextItem == ShellViewActionsLists.contextActionsClient[0]) //assign Manager
-        //        {
-                    
-        //            //////////////////////////////////////////////////////
-        //            ActivateItem(null);                                 //
-        //            //throw new NotImplementedException("assign Manager");//
-        //            //////////////////////////////////////////////////////
-        //        }//assign Manager
-        //        else if (SelectedContextItem == ShellViewActionsLists.contextActionsClient[1]) //View contact
-        //        {
-        //            ////////////////////////////////////////////////////
-        //            ActivateItem(null);                               //
-        //            //throw new NotImplementedException("View contact");//
-        //            ////////////////////////////////////////////////////
-        //        }//View contact
-        //        else if (SelectedContextItem == ShellViewActionsLists.contextActionsClient[2]) //product list
-        //        {
-        //            ////////////////////////////////////////////////////
-        //            ActivateItem(null);                               //
-        //           //throw new NotImplementedException("product list");//
-        //            ////////////////////////////////////////////////////
-        //        }//product list
-        //    }//clients
-
-        //    else if (SelectedMainAction == ShellViewActionsLists.mainActions[2])//products
-        //    {
-        //        if (SelectedContextItem == ShellViewActionsLists.contextActionsProduct[0])//give to client
-        //        {
-        //            //////////////////////////////////////////////////////
-        //            ActivateItem(null);                                 //
-        //            //throw new NotImplementedException("give to client");//
-        //            //////////////////////////////////////////////////////
-        //        }//give to client
-        //        else if (SelectedContextItem == ShellViewActionsLists.contextActionsProduct[1])//clients List
-        //        {
-        //            ////////////////////////////////////////////////////
-        //            ActivateItem(null);                               //
-        //            //throw new NotImplementedException("clients List");//
-        //            ////////////////////////////////////////////////////
-        //        }//clients List
-        //    }//products
-        //    SelectedContextItem = null;
-        //}
 
         public void DataGridSelectionChanged()
         {
@@ -259,18 +182,19 @@ namespace test_task.ViewModels
                 switch (choosenType)
                 {
                     case Manager _:
-                        choosenObject = list[DataOutSelectedIndex] as Manager;
-                        ActivateItem(new ClientByManagerViewModel());
+                        choosenObject = new Manager(DataOutSelectedItem as Manager);
+                        ActivateItem(new ManagerWindowViewModel());
                         break;
 
                     case Client _:
-                        choosenObject = list[DataOutSelectedIndex] as Client;
+                        choosenObject = new Client(DataOutSelectedItem as Client);
+                        ActivateItem(new ClientWindowViewModel());
 
                         break;
 
                     case Product _:
-                        choosenObject = list[DataOutSelectedIndex] as Product;
-
+                        choosenObject = new Product(DataOutSelectedItem as Product);
+                        ActivateItem(new ProductWindowViewModel());
                         break;
 
                     default:

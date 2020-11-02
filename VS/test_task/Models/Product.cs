@@ -42,6 +42,16 @@ namespace test_task.Classes
             this.Owner = owner;
         }
 
+        public Product(Product product)
+        {
+            this.ID = product.ID;
+            this.Name = product.Name;
+            this.Price = product.Price;
+            this.Subscribtion = product.Subscribtion;
+            this.Period = product.Period;
+            this.Owner = product.Owner;
+        }
+
         #region IConvertible
         string IConvertible.ToString(IFormatProvider provider)
         {
@@ -56,7 +66,14 @@ namespace test_task.Classes
         
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
-            throw new InvalidCastException();
+            if (conversionType.Name == "Product")
+            {
+                return this;
+            }
+            else
+            {
+                return Convert.ChangeType(ToString(), conversionType);
+            }
         }
 
         public TypeCode GetTypeCode()

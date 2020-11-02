@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace test_task.Views
 {
     /// <summary>
-    /// Interaction logic for ClientByManagerView.xaml
+    /// Interaction logic for ProductWindowView.xaml
     /// </summary>
-    public partial class ClientByManagerView : UserControl
+    public partial class ProductWindowView : UserControl
     {
-        public ClientByManagerView()
+        public ProductWindowView()
         {
             InitializeComponent();
         }

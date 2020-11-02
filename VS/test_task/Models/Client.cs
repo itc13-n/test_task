@@ -25,6 +25,14 @@ namespace test_task.Classes
             this.Comment = comment;
         }
 
+        public Client(Client client)
+        {
+            this.ID = client.ID;
+            this.Name = client.Name;
+            this.PriorClient = client.PriorClient;
+            this.Comment = client.Comment;
+        }
+
         #region IConvertible
         string IConvertible.ToString(IFormatProvider provider)
         {
@@ -38,7 +46,15 @@ namespace test_task.Classes
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
-            throw new InvalidCastException();
+            if (conversionType.Name == "Client")
+            {
+                return this;  
+            }
+            else
+            {
+                return Convert.ChangeType(ToString(), conversionType);
+            }
+            //return Convert.ChangeType(ToString(), conversionType);
         }
 
         public TypeCode GetTypeCode()

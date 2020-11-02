@@ -24,5 +24,15 @@ C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\App.baml
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ShellView.baml
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\test_task.g.resources
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\test_task.Development.DebugForm.resources
-C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ClientByManagerView.g.cs
-C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ClientByManagerView.baml
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\AddClientToManagerView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\AddClientToManagerView.baml
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ClientWindowView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ClientWindowView.baml
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\AddProductToClientView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\AddProductToClientView.baml
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ProductWindowView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ProductWindowView.baml
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ManagerWindowView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ManagerWindowView.baml
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ContactWindowView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ContactWindowView.baml

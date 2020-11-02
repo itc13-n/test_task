@@ -40,6 +40,15 @@ USE [$(DatabaseName)];
 
 
 GO
+PRINT N'Creating unnamed constraint on [dbo].[CLIENTS_MANAGERS_LINK]...';
+
+
+GO
+ALTER TABLE [dbo].[CLIENTS_MANAGERS_LINK]
+    ADD UNIQUE NONCLUSTERED ([CLIENT_ID] ASC);
+
+
+GO
 PRINT N'Update complete.';
 
 

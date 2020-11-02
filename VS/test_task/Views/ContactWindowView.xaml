@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="test_task.Views.ContactWindowView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:test_task.Views"
+             xmlns:cal ="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             MinHeight="300" MinWidth="200"
+             d:DesignHeight="200" d:DesignWidth="100"
+             Background="Gray">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            
+            <ColumnDefinition Width="*"/>
+            
+            <ColumnDefinition Width="10"/>
+            
+            <ColumnDefinition Width="*"/>
+            
+            <ColumnDefinition Width="25"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+            Text="Контактная информация"
+            Grid.Row="1"
+            Grid.ColumnSpan="3"
+            Grid.Column="1"
+            FontSize="18"
+            TextAlignment="Center">
+        </TextBlock>
+
+        <TextBlock 
+            Text="Имя"
+            Grid.Row="4"
+            Grid.Column="1"
+            FontSize="16">
+        </TextBlock>
+
+        <TextBox x:Name="Contact_FirstName"
+            Grid.Row="4"
+            Grid.Column="3"
+            FontSize="16">
+        </TextBox>
+
+
+        <TextBlock 
+            Text="Фамилия"
+            Grid.Row="6"
+            Grid.Column="1"
+            FontSize="16">
+        </TextBlock>
+
+        <TextBox x:Name="Contact_LastName"
+            Grid.Row="6"
+            Grid.Column="3"
+            FontSize="16"
+            IsReadOnly="True">
+        </TextBox>
+
+        <TextBlock 
+            Text="Телефон"
+            Grid.Row="8"
+            Grid.Column="1"
+            FontSize="16">
+        </TextBlock>
+
+        <TextBox x:Name="Contact_Tel"
+            Grid.Row="8"
+            Grid.Column="3"
+            FontSize="16"
+            IsReadOnly="True">
+        </TextBox>
+
+        <TextBlock 
+            Text="Email"
+            Grid.Row="10"
+            Grid.Column="1"
+            FontSize="16">
+        </TextBlock>
+
+        <TextBox x:Name="Contact_Email"
+            Grid.Row="10"
+            Grid.Column="3"
+            FontSize="16"
+            IsReadOnly="True">
+        </TextBox>
+
+        <TextBlock 
+            Text="Комментарий"
+            Grid.Row="12"
+            Grid.Column="1"
+            FontSize="16">
+        </TextBlock>
+
+        <TextBox x:Name="Contact_Comment"
+            Grid.Row="12"
+            Grid.Column="3"
+            FontSize="16"
+            IsReadOnly="True">
+        </TextBox>
+
+        <Button x:Name="CloseButton"
+                cal:Message.Attach="[Event Click] = [Action CloseButtonClick]"
+                Grid.Row="15"
+                Grid.Column="1"
+                Grid.ColumnSpan="3">
+            Закрыть
+        </Button>
+    </Grid>
+</UserControl>
+

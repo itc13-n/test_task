@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Windows.Forms;
 using test_task.Classes;
 using test_task.DB;
@@ -234,6 +235,16 @@ namespace test_task.Development
 
             
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Use default connection string?", "Which connection string to use?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                return;
+            }
+            DBOperator.ConnectionString = richTextBox1.SelectedText;
         }
     }
 }

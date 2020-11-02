@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\App.xaml
-2-2016159952
+71224591858
 
-171897407420
+27-1829402460
 712134282476
-Views\ClientByManagerView.xaml;Views\ShellView.xaml;
+Views\AddClientToManagerView.xaml;Views\AddProductToClientView.xaml;Views\ContactWindowView.xaml;Views\ManagerWindowView.xaml;Views\ClientWindowView.xaml;Views\ProductWindowView.xaml;Views\ShellView.xaml;
 
 False
 

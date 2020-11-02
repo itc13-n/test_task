@@ -22,7 +22,12 @@ namespace test_task.Classes
             this.Comment = comment;
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////
+        public Manager(Manager manager)
+        {
+            this.ID = manager.ID;
+            this.Name = manager.Name;
+            this.Comment = manager.Comment;
+        }
         #region IConvertible
         string IConvertible.ToString(IFormatProvider provider)
         {
@@ -32,7 +37,7 @@ namespace test_task.Classes
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
-            throw new InvalidCastException();
+            return Convert.ChangeType(ToString(), conversionType);
         }
 
         public TypeCode GetTypeCode()
