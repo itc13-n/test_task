@@ -98,10 +98,12 @@
     </Compile>
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\IInsertNotNull.cs" />
     <Compile Include="Models\Manager.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="DB interaction\DBOperator.cs" />
     <Compile Include="ViewModels\AddClientToManagerViewModel.cs" />
+    <Compile Include="ViewModels\AddNewItemViewModel.cs" />
     <Compile Include="ViewModels\AddProductToClientViewModel.cs" />
     <Compile Include="ViewModels\ContactWindowViewModel.cs" />
     <Compile Include="ViewModels\ManagerWindowViewModel.cs" />
@@ -110,6 +112,9 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\AddClientToManagerView.xaml.cs">
       <DependentUpon>AddClientToManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddNewItemView.xaml.cs">
+      <DependentUpon>AddNewItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddProductToClientView.xaml.cs">
       <DependentUpon>AddProductToClientView.xaml</DependentUpon>
@@ -170,6 +175,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AddClientToManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddNewItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -117,7 +117,7 @@ namespace test_task.ViewModels
                 return;
             }
 
-            DBOperator.Relation(clientIDToRemove, new Manager(), true);
+            DBOperator.Relation(clientIDToRemove,SelectedManager, true);
             FillLB();
             
         }

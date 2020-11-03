@@ -1,8 +1,9 @@
 ﻿using System;
+using test_task.Models;
 
 namespace test_task.Classes
 {
-    public class Product : IConvertible
+    public class Product : IConvertible, IInsertNotNull
     {
 
         public int ID { get; set; }
@@ -50,6 +51,14 @@ namespace test_task.Classes
             this.Subscribtion = product.Subscribtion;
             this.Period = product.Period;
             this.Owner = product.Owner;
+        }
+
+        public bool Edited()
+        {
+            return !((Name == "-" || Name == "" || string.IsNullOrEmpty(Name))
+                    & (Price <= 0)
+                    & !(Subscribtion)
+                    & Period == null);
         }
 
         #region IConvertible

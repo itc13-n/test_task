@@ -1,8 +1,9 @@
 ﻿using System;
+using test_task.Models;
 
 namespace test_task.Classes
 {
-    public class Manager : IConvertible
+    public class Manager : IConvertible, IInsertNotNull
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -15,7 +16,7 @@ namespace test_task.Classes
             this.Comment = "dummy";
         }
 
-        public Manager(int id, string name, string comment)
+        public Manager(int id, string name = null, string comment = null)
         {
             this.ID = id;
             this.Name = name;
@@ -28,6 +29,13 @@ namespace test_task.Classes
             this.Name = manager.Name;
             this.Comment = manager.Comment;
         }
+
+        public bool Edited()
+        {
+            return !(Name == "-" || Name == "" || string.IsNullOrEmpty(Name) 
+                & (Comment == "dummy" || Comment == "" || string.IsNullOrEmpty(Comment)));
+        }
+
         #region IConvertible
         string IConvertible.ToString(IFormatProvider provider)
         {

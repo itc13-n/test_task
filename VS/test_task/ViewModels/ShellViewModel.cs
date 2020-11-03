@@ -5,6 +5,7 @@ using test_task.Views;
 using test_task.Classes;
 using System.Collections.Generic;
 using System.Windows;
+using System;
 
 namespace test_task.ViewModels
 {
@@ -25,13 +26,12 @@ namespace test_task.ViewModels
         #region fields
         private string _selectedMainAction;
         private BindableCollection<string> _mainActions;
-        private BindableCollection<string> _changeItemActions = new BindableCollection<string>();
-        private BindableCollection<string> _contextItemAction = new BindableCollection<string>();
         private object _dataOut;
         private int _dataOutSelectedIndex;
-        private bool _writeToDB = false;
-        private bool _canUseContextItem;
         private object _dataOutSelectedItem;
+        private bool _isDataGridEnabled = true;
+        private bool _isAddButtonEnabled = false;
+        private bool _isRemoveButtonEnabled = false;
         #endregion
 
         #region properties
@@ -43,24 +43,6 @@ namespace test_task.ViewModels
                 _selectedMainAction = value;
                 //choosenType = _selectedMainAction;
                 NotifyOfPropertyChange(() => SelectedMainAction);
-            }
-        }
-        public BindableCollection<string> ContextItemActions
-        {
-            get { return _contextItemAction; }
-            set 
-            {
-                _contextItemAction = value;
-                NotifyOfPropertyChange(() => ContextItemActions);
-            }
-        }
-        public BindableCollection<string> ChangeItemActions
-        {
-            get { return _changeItemActions; }
-            set 
-            {
-                _changeItemActions = value;
-                NotifyOfPropertyChange(() => ChangeItemActions);
             }
         }
         public BindableCollection<string> MainActions
@@ -78,26 +60,6 @@ namespace test_task.ViewModels
             set 
             {
                 _dataOut = value;
-                
-                if (_writeToDB)
-                {
-                    switch (choosenType)
-                    {
-                        case Manager m:
-                            DBOperator.UpdateObject((DataOut as List<object>)[DataOutSelectedIndex] as Manager);
-                            break;
-                        case Client c:
-                            DBOperator.UpdateObject((DataOut as List<object>)[DataOutSelectedIndex] as Client);
-                            break;
-                        case Product p:
-                            DBOperator.UpdateObject((DataOut as List<object>)[DataOutSelectedIndex] as Product);
-                            break;
-
-                        default:
-                            break;
-                    }
-                    FillDG();
-                }
                 NotifyOfPropertyChange(() => DataOut);
             }
         }
@@ -110,15 +72,6 @@ namespace test_task.ViewModels
                 NotifyOfPropertyChange(() => DataOutSelectedIndex);
             }
         }
-        public bool CanUseContextItem
-        {
-            get { return _canUseContextItem; }
-            set
-            {
-                _canUseContextItem = value;
-                NotifyOfPropertyChange(() => CanUseContextItem);
-            }
-        }
         public object DataOutSelectedItem
         {
             get => _dataOutSelectedItem;
@@ -126,6 +79,33 @@ namespace test_task.ViewModels
             {
                 _dataOutSelectedItem = value;
                 NotifyOfPropertyChange(() => DataOutSelectedItem);
+            }
+        }
+        public bool IsDataGridEnabled
+        {
+            get => _isDataGridEnabled;
+            set 
+            {
+                _isDataGridEnabled = value;
+                NotifyOfPropertyChange(() => IsDataGridEnabled);
+            }
+        }
+        public bool IsAddButtonEnabled
+        {
+            get => _isAddButtonEnabled;
+            set 
+            {
+                _isAddButtonEnabled = value;
+                NotifyOfPropertyChange(() => IsAddButtonEnabled);
+            }
+        }
+        public bool IsRemoveButtonEnabled
+        {
+            get => _isRemoveButtonEnabled;
+            set 
+            {
+                _isRemoveButtonEnabled = value;
+                NotifyOfPropertyChange(() => IsRemoveButtonEnabled);
             }
         }
         #endregion
@@ -138,9 +118,9 @@ namespace test_task.ViewModels
             //////////////////////////
             DisplayName = "Задание";
             MainActions = new BindableCollection<string>(ShellViewActionsLists.mainActions);
-            ChangeItemActions = new BindableCollection<string>(ShellViewActionsLists.changeItemActions);
             //////////////////////////
-            
+            ShellView.CViewModel = this;
+            AddNewItemViewModel.CViewModel = this;
             //////////////////////////
         }
         #endregion
@@ -148,6 +128,9 @@ namespace test_task.ViewModels
         #region enents
         public void MainSelectionChanged()
         {
+            IsRemoveButtonEnabled = false;
+            IsAddButtonEnabled = false;
+            ActivateItem(null);
             if (SelectedMainAction == ShellViewActionsLists.mainActions[0])
             {
                 choosenType = new Manager();
@@ -176,9 +159,10 @@ namespace test_task.ViewModels
             List<object> list = DataOut as List<object>;
             ActivateItem(null);
 
-            if (!(list is null) & (list.Count > 0) & (DataOutSelectedIndex > -1))
+            if (!(list is null) & (list.Count > 0) & (DataOutSelectedIndex > -1) & (DataOutSelectedIndex < (DataOut as List<object>).Count))
             {
-                CanUseContextItem = true;
+                IsAddButtonEnabled = true;
+                IsRemoveButtonEnabled = true;
                 switch (choosenType)
                 {
                     case Manager _:
@@ -189,7 +173,6 @@ namespace test_task.ViewModels
                     case Client _:
                         choosenObject = new Client(DataOutSelectedItem as Client);
                         ActivateItem(new ClientWindowViewModel());
-
                         break;
 
                     case Product _:
@@ -199,15 +182,65 @@ namespace test_task.ViewModels
 
                     default:
                         break;
-                }                
+                }
             }
+
+        }
+
+        public void DataOutRowEditEnding()
+        {
+            switch (choosenType)
+            {
+                case Manager m:
+                    DBOperator.UpdateObject((DataOut as List<object>)[DataOutSelectedIndex] as Manager);
+                    break;
+                case Client c:
+                    DBOperator.UpdateObject((DataOut as List<object>)[DataOutSelectedIndex] as Client);
+                    break;
+                case Product p:
+                    DBOperator.UpdateObject((DataOut as List<object>)[DataOutSelectedIndex] as Product);
+                    break;
+                default:
+                    break;
+            }
+            DataOutSelectedIndex = -1;
+            DataOutSelectedItem = null;
+        }
+
+        public void AddButtonClick()
+        {
+            IsDataGridEnabled = false;
+            ActivateItem(new AddNewItemViewModel());
+
+        }
+
+        public void RemoveButtonClick()
+        {
+            if (DataOutSelectedIndex < 0 
+                || DataOutSelectedItem is null 
+                || choosenObject is null 
+                || choosenObject.GetType() != choosenObject.GetType()
+                || choosenObject.GetType() != DataOutSelectedItem.GetType())
+            {
+                return;
+            }
+            DBOperator.DeleteObject(choosenObject);
+            FillDG();
+
         }
         #endregion
 
         #region functions
+        public void EnableDataGrid()
+        {
+            IsDataGridEnabled = true;
+            FillDG();
+        }
+
         private void FillDG()
         {
             DataOut = DBOperator.GetObjects(choosenType);
+            IsDataGridEnabled = true;
         }
         #endregion
 
@@ -224,13 +257,27 @@ namespace test_task.ViewModels
         }
         #endregion
 
-        #region Garbage
-        public void SMTH()
-        {
-            //MessageBox.Show(((DataOut as List<object>)[Index] as Manager).Name);
-        }
+        #region garbage
+        //public delegate void SomeHandler();
+        //private event SomeHandler _notify;
+
+        //public event SomeHandler Notify
+        //{
+        //    add
+        //    {
+        //        _notify += value;
+        //    }
+        //    remove
+        //    {
+        //        _notify -= value;
+        //    }
+        //}
 
 
+        //public void SomeFunc()
+        //{
+        //    MessageBox.Show("!");
+        //}
 
         #endregion
     }

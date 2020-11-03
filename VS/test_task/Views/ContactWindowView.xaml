@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:test_task.Views"
              xmlns:cal ="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             MinHeight="300" MinWidth="200"
-             d:DesignHeight="200" d:DesignWidth="100"
+             MinHeight="400" MinWidth="300"
+             d:DesignHeight="300" d:DesignWidth="200
+"
              Background="Gray">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -44,6 +45,8 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
@@ -66,7 +69,8 @@
         <TextBox x:Name="Contact_FirstName"
             Grid.Row="4"
             Grid.Column="3"
-            FontSize="16">
+            FontSize="16"
+            IsEnabled="{Binding Path = IsEditingEnabled}">
         </TextBox>
 
 
@@ -81,7 +85,7 @@
             Grid.Row="6"
             Grid.Column="3"
             FontSize="16"
-            IsReadOnly="True">
+            IsEnabled="{Binding Path = IsEditingEnabled}">
         </TextBox>
 
         <TextBlock 
@@ -95,7 +99,7 @@
             Grid.Row="8"
             Grid.Column="3"
             FontSize="16"
-            IsReadOnly="True">
+            IsEnabled="{Binding Path = IsEditingEnabled}">
         </TextBox>
 
         <TextBlock 
@@ -109,7 +113,7 @@
             Grid.Row="10"
             Grid.Column="3"
             FontSize="16"
-            IsReadOnly="True">
+            IsEnabled="{Binding Path = IsEditingEnabled}">
         </TextBox>
 
         <TextBlock 
@@ -123,12 +127,30 @@
             Grid.Row="12"
             Grid.Column="3"
             FontSize="16"
-            IsReadOnly="True">
+            IsEnabled="{Binding Path = IsEditingEnabled}">
         </TextBox>
 
+        <Button x:Name="EditButton"
+                cal:Message.Attach="[Event Click] = [Action EditButtonClick]"
+                Grid.Row="15"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Visibility="{Binding Path = ShowEditButton}">
+            Редактировать
+        </Button>
+        
+        <Button x:Name="SaveButton"
+                cal:Message.Attach="[Event Click] = [Action SaveButtonClick]"
+                Grid.Row="15"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Visibility="{Binding Path = ShowSaveButton}">
+            Сохранить
+        </Button>
+        
         <Button x:Name="CloseButton"
                 cal:Message.Attach="[Event Click] = [Action CloseButtonClick]"
-                Grid.Row="15"
+                Grid.Row="17"
                 Grid.Column="1"
                 Grid.ColumnSpan="3">
             Закрыть

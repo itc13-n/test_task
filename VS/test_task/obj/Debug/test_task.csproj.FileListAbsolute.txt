@@ -36,3 +36,5 @@ C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\Man
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ManagerWindowView.baml
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ContactWindowView.g.cs
 C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\ContactWindowView.baml
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\AddNewItemView.g.cs
+C:\Users\Intercepter\source\test_task\test_task\VS\test_task\obj\Debug\Views\AddNewItemView.baml

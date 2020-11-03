@@ -1,8 +1,9 @@
 ﻿using System;
+using test_task.Models;
 
 namespace test_task.Classes
 {
-    public class Client : IConvertible
+    public class Client : IConvertible, IInsertNotNull
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -32,6 +33,10 @@ namespace test_task.Classes
             this.PriorClient = client.PriorClient;
             this.Comment = client.Comment;
         }
+
+        public bool Edited() => !(Name == "-" || Name == "" || string.IsNullOrEmpty(Name) 
+            & (Comment == "dummy" || Comment == "" || string.IsNullOrEmpty(Comment)) 
+            & PriorClient == false);
 
         #region IConvertible
         string IConvertible.ToString(IFormatProvider provider)

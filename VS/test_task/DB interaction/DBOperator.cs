@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using test_task.Classes;
+using test_task.Models;
 
 namespace test_task.DB
 {
@@ -267,9 +268,13 @@ namespace test_task.DB
         }
 
 
-        public static int InsertData <T>(List<T> data)
+        public static int InsertData<T>(List<T> data)
         {
-            if (data is null)
+            if (data is null && (data.Count < 1))
+            {
+                throw new ArgumentNullException($"data {typeof(T)} was null");
+            }
+            else if (!(data[0] as IInsertNotNull).Edited())
             {
                 throw new ArgumentNullException($"data {typeof(T)} was null");
             }
@@ -279,9 +284,9 @@ namespace test_task.DB
             string table, values;
             int rowsAffected = -2;
 
-            switch (data)
+            switch (data[0])
             {
-                case List<Manager> m:
+                case Manager m:
                     table = "MANAGERS";
                     values = "('" + (data[0] as Manager).Name + "', '" 
                         + (data[0] as Manager).Comment + "')";
@@ -296,7 +301,7 @@ namespace test_task.DB
                     }
                     break;
 
-                case List<Client> c:
+                case Client c:
                     table = "CLIENTS";
                     values = "('"
                         + (data[0] as Client).Name + "', " 
@@ -314,7 +319,7 @@ namespace test_task.DB
                     }
                     break;
 
-                case List<Product> p:
+                case Product p:
                     table = "PRODUCTS";
                     values = "('"
                         + (data[0] as Product).Name + "', " 
@@ -425,9 +430,9 @@ namespace test_task.DB
 
                 rowsAffected = sqlCmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch (Exception)// ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -438,25 +443,42 @@ namespace test_task.DB
 
         }
 
-        public static int DeleteObject<T>(T type, string where)
+        public static int DeleteObject<T>(T objectToRemove, string where = null)
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
             SqlCommand sqlCmd = new SqlCommand();
             string table;
+            string reference;
             int rowsAffected = -2;
 
-            switch (type)
+            switch (objectToRemove)
             {
                 case Manager m:
                     table = "MANAGERS";
+                    if (where is null)
+                    {
+                        where = "ID = " + (objectToRemove as Manager).ID;
+                    }
+                    reference = $"delete from CLIENTS_MANAGERS_LINK where MANAGER_ID = {(objectToRemove as Manager).ID};";
                     break;
 
                 case Client c:
                     table = "CLIENTS";
+                    if (where is null)
+                    {
+                        where = "ID = " + (objectToRemove as Client).ID;
+                    }
+                    reference = $"delete from CLIENTS_PRODUCTS_LINK where CLIENT_ID = {(objectToRemove as Client).ID};" +
+                                $"delete from CLIENTS_MANAGERS_LINK where CLIENT_ID = {(objectToRemove as Client).ID};";
                     break;
 
                 case Product p:
                     table = "PRODUCTS";
+                    if (where is null)
+                    {
+                        where = "ID = " + (objectToRemove as Product).ID;
+                    }
+                    reference = $"delete from CLIENTS_PRODUCTS_LINK where PRODUCT_ID = {(objectToRemove as Product).ID}";
                     break;
 
                 default:
@@ -464,7 +486,7 @@ namespace test_task.DB
             }
             
             sqlCmd.Connection = cn;
-            sqlCmd.CommandText = $"DELETE from {table} where {where}";
+            sqlCmd.CommandText = $";{reference} DELETE from {table} where {where} ";
 
             try
             {
@@ -497,7 +519,7 @@ namespace test_task.DB
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
             SqlCommand sqlCmd = new SqlCommand();
-            string table,insertText, deleteText;
+            string table, insertText, deleteText, identify;
             int rowsAffected = -2;
             if (!remove)
             {
@@ -529,16 +551,18 @@ namespace test_task.DB
                     {
                         case Manager _:
                             table = "CLIENTS_MANAGERS_LINK";
+                            identify = $"MANAGER_ID = {(relType as Manager).ID}";
                             break;
 
                         case Product _:
                             table = "CLIENTS_PRODUCTS_LINK";
+                            identify = $"PRODUCT_ID = {(relType as Product).ID}";
                             break;
 
                         default:
                             throw new ArgumentException("Invalid object Type. DELETE (relation) query aborted.");
                     }
-                    sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client_ID} and PRODUCT_ID = {(relType as Product).ID}"; 
+                    sqlCmd.CommandText = $"delete from {table} where CLIENT_ID = {client_ID} and {identify}"; 
                 }
                 else
                 {
@@ -595,9 +619,9 @@ namespace test_task.DB
                 sqlClearCmd.ExecuteNonQuery();
                 rowsAffected = sqlInsertCmd.ExecuteNonQuery();                
             }
-            catch (Exception ex)
+            catch (Exception)// ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
             finally
             {
