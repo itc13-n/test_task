@@ -1,9 +1,4 @@
 ﻿using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using test_task.Classes;
 using test_task.DB;
@@ -61,7 +56,7 @@ namespace test_task.ViewModels
         #region ctors
         public ContactWindowViewModel()
         {
-            Contact = DBOperator.GetContact(ShellViewModel.ChoosenObject as Client);
+            Contact = DBOperator.GetContact((ShellViewModel.ChoosenObject as Client).ID);
             IsEditingEnabled = false;
             ShowEditButton = Visibility.Visible;
             ShowSaveButton = Visibility.Hidden;
@@ -84,8 +79,7 @@ namespace test_task.ViewModels
         public void SaveButtonClick()
         {
 
-            Contact newContact = Contact;
-            DBOperator.InsertContact(Contact);
+            DBOperator.InsertContact(Contact, (ShellViewModel.ChoosenObject as Client).ID);
             IsEditingEnabled = false;
             ShowEditButton = Visibility.Visible;
             ShowSaveButton = Visibility.Hidden;

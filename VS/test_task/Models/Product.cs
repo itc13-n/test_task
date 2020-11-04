@@ -55,10 +55,11 @@ namespace test_task.Classes
 
         public bool Edited()
         {
-            return !((Name == "-" || Name == "" || string.IsNullOrEmpty(Name))
-                    & (Price <= 0)
-                    & !(Subscribtion)
-                    & Period == null);
+            bool nameIsValid = !(Name == "-" || Name == "" || string.IsNullOrEmpty(Name));
+            bool subscribtionIsValid = Subscribtion;
+            bool priceIsValid = Price > 0;
+
+            return nameIsValid && subscribtionIsValid && priceIsValid;
         }
 
         #region IConvertible

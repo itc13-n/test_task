@@ -194,39 +194,6 @@ namespace test_task.Development
                     textBox1.Text = DBOperator.UpdateObject(o).ToString();
                     break;
 
-                case "contact":
-                    switch (s[1].ToLower())
-                    {
-                        case "insert":
-                            textBox1.Text = DBOperator.InsertContact(new Contact(-2,
-                                                         "Randal",
-                                                          "Zayac",
-                                                          79990007766,
-                                                          "RandalZ@uuu.mm",
-                                                          "",
-                                                          6)).ToString();
-                            break;
-
-                        case "get":
-                            Client client = new Client();
-                            client.ID = 6;
-
-                            Contact contact = DBOperator.GetContact(client);
-
-                            listBox2.Items.Clear();
-                            listBox2.Items.Add(contact.ID.ToString() + " " 
-                                               + contact.FirstName + " " 
-                                               + contact.LastName+ " " 
-                                               + contact.Tel.ToString() + " " 
-                                               + contact.Email + " " 
-                                               + contact.Comment + " "
-                                               + contact.ClientID);
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-
                 default:
                     break;
             }
@@ -246,5 +213,6 @@ namespace test_task.Development
             }
             DBOperator.ConnectionString = richTextBox1.SelectedText;
         }
+
     }
 }

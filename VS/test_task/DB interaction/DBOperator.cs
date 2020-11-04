@@ -18,7 +18,12 @@ namespace test_task.DB
         }
 
 
-        public static List<T> GetObjects<T>(T type, string select = "*", string where = null, string orderBy = null, string groupBy = null)
+
+        public static List<T> GetObjects<T>(T type,
+                                            string select = "*",
+                                            string where = null,
+                                            string orderBy = null,
+                                            string groupBy = null)
         {
             List<T> outObjects = new List<T>();
             SqlConnection cn = new SqlConnection(ConnectionString);
@@ -74,7 +79,11 @@ namespace test_task.DB
         return outObjects;
         }
 
-        public static List<Product> GetProductsByClient(int client_ID, string select = "PL.*", string where = null, string orderBy = null, string groupBy = null)
+        public static List<Product> GetProductsByClient(int client_ID,
+                                                        string select = "PL.*",
+                                                        string where = null,
+                                                        string orderBy = null,
+                                                        string groupBy = null)
         {
             List<Product> outObjects = new List<Product>();
             SqlConnection cn = new SqlConnection(ConnectionString);
@@ -133,7 +142,11 @@ namespace test_task.DB
             return outObjects;
         }
 
-        public static List<Client> GetClientsByManager(int manager_ID, string select = "CL.*", string where = null, string orderBy = null, string groupBy = null)
+        public static List<Client> GetClientsByManager(int manager_ID,
+                                                       string select = "CL.*",
+                                                       string where = null,
+                                                       string orderBy = null,
+                                                       string groupBy = null)
         {
             List<Client> outObjects = new List<Client>();
             SqlConnection cn = new SqlConnection(ConnectionString);
@@ -182,7 +195,11 @@ namespace test_task.DB
             return outObjects;
         }
 
-        public static List<Client> GetClientsByProduct(int product_ID, string select = "CL.*", string where = null, string orderBy = null, string groupBy = null)
+        public static List<Client> GetClientsByProduct(int product_ID,
+                                                       string select = "CL.*",
+                                                       string where = null,
+                                                       string orderBy = null,
+                                                       string groupBy = null)
         {
             List<Client> outObjects = new List<Client>();
             SqlConnection cn = new SqlConnection(ConnectionString);
@@ -268,7 +285,8 @@ namespace test_task.DB
         }
 
 
-        public static int InsertData<T>(List<T> data)
+
+        public static int InsertData<T>(List<T> data, bool showMessage = false)
         {
             if (data is null && (data.Count < 1))
             {
@@ -276,7 +294,7 @@ namespace test_task.DB
             }
             else if (!(data[0] as IInsertNotNull).Edited())
             {
-                throw new ArgumentNullException($"data {typeof(T)} was null");
+                throw new ArgumentNullException($"data {typeof(T)} was null!");
             }
 
             SqlConnection cn = new SqlConnection(ConnectionString);
@@ -292,9 +310,9 @@ namespace test_task.DB
                         + (data[0] as Manager).Comment + "')";
                     if (data.Count > 0)
                     {
-                        for (int i = 1; i < data.Count - 1; i++)
+                        for (int i = 1; i < data.Count; i++)
                         {
-                            values = ", ('"
+                            values += ", ('"
                                 + (data[i] as Manager).Name + "', '" 
                                 + (data[i] as Manager).Comment + "')";
                         }
@@ -309,32 +327,53 @@ namespace test_task.DB
                         + (data[0] as Client).Comment + "')";
                     if (data.Count > 0)
                     {
-                        for (int j = 1; j < data.Count - 1; j++)
+                        for (int j = 1; j < data.Count; j++)
                         {
-                            values = ", ('" 
-                                + (data[j] as Client).Name + "', " 
-                                + (data[j] as Client).PriorClient + ", '" 
+                            values += ", ('" 
+                                + (data[j] as Client).Name + "', "
+                                + Convert.ToInt32((data[j] as Client).PriorClient) + ", '" 
                                 + (data[j] as Client).Comment + "')";
                         }
                     }
                     break;
 
                 case Product p:
+                    string per;
                     table = "PRODUCTS";
+                    if (!(data[0] as Product).Subscribtion)
+                    {
+                        per = "NULL";
+                        (data[0] as Product).Period = null;
+                    }
+                    else
+                    {
+                        per = Convert.ToString((data[0] as Product).Period);
+                    }
+
                     values = "('"
                         + (data[0] as Product).Name + "', " 
                         + (data[0] as Product).Price + ", " 
-                        + Convert.ToInt32((data[0] as Product).Subscribtion) + ", '" 
-                        + (data[0] as Product).Period + "')";
+                        + Convert.ToInt32((data[0] as Product).Subscribtion) + ", " 
+                        + per + ")";
                     if (data.Count > 0)
                     {
-                        for (int k = 1; k < data.Count - 1; k++)
+                        for (int k = 1; k < data.Count; k++)
                         {
-                            values = ", ('"
+                            if (!(data[k] as Product).Subscribtion)
+                            {
+                                per = "NULL";
+                                (data[k] as Product).Period = null;
+                            }
+                            else
+                            {
+                                per = Convert.ToString((data[0] as Product).Period);
+                            }
+
+                            values += ", ('"
                                 + (data[k] as Product).Name + "', " 
                                 + (data[k] as Product).Price + ", " 
-                                + (data[k] as Product).Subscribtion + ", " 
-                                + (data[k] as Product).Period + ")";
+                                + Convert.ToInt32((data[k] as Product).Subscribtion) + ", " 
+                                + per + ")";
                         }
                     }
 
@@ -360,7 +399,10 @@ namespace test_task.DB
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                if (showMessage)
+                {
+                    MessageBox.Show(ex.Message + "\n" + sqlCmd.CommandText);
+                }
             }
             finally
             {
@@ -506,6 +548,7 @@ namespace test_task.DB
             return rowsAffected;
         }
 
+
         /// <summary>
         /// Add/Remove relation between two objects in CLIENTS and MANAGER/PRODUCTS
         /// </summary>
@@ -593,22 +636,31 @@ namespace test_task.DB
         }    
 
 
-        public static int InsertContact(Contact contact, Client client = null)
+        public static int InsertContact(Contact contact, int client_ID, bool showMessage = false)
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
             SqlCommand sqlInsertCmd = new SqlCommand();
             SqlCommand sqlClearCmd = new SqlCommand();
             int rowsAffected = -2;
-            int client_ID = client is null ? contact.ClientID : client.ID;
             
             sqlClearCmd.Connection = cn;
             sqlClearCmd.CommandText = $"delete from CONTACTS where CLIENT_ID = {client_ID};";
-            
+
+            string tel;
+            if (contact.Tel is null)
+            {
+                tel = "NULL";
+            }
+            else
+            {
+                tel = contact.Tel.Value.ToString();
+            }
+
             sqlInsertCmd.Connection = cn;
             sqlInsertCmd.CommandText = "insert into CONTACTS values (" +
                                         $" '{contact.FirstName}'," +
                                         $" '{contact.LastName}' ," +
-                                        $"{contact.Tel}," +
+                                        $"{tel}," +
                                         $" '{contact.Email}' ," +
                                         $" '{contact.Comment}' ," +
                                         $"{client_ID})";
@@ -619,9 +671,16 @@ namespace test_task.DB
                 sqlClearCmd.ExecuteNonQuery();
                 rowsAffected = sqlInsertCmd.ExecuteNonQuery();                
             }
-            catch (Exception)// ex)
+            catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                if (showMessage)
+                {
+                    MessageBox.Show(ex.Message
+                        + "\n"
+                        + sqlClearCmd.CommandText
+                        + "\n"
+                        + sqlInsertCmd.CommandText);
+                }
             }
             finally
             {
@@ -631,14 +690,14 @@ namespace test_task.DB
             return rowsAffected;
         }
 
-        public static Contact GetContact(Client client)
+        public static Contact GetContact(int client_ID)
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
-            SqlCommand sqlCmd = new SqlCommand();
-            
-            sqlCmd.Connection = cn;
-
-            sqlCmd.CommandText = $"select * from CONTACTS where CLIENT_ID = {client.ID} order by ID offset 0 rows fetch next 1 row only";
+            SqlCommand sqlCmd = new SqlCommand
+            {
+                Connection = cn,
+                CommandText = $"select * from CONTACTS where CLIENT_ID = {client_ID} order by ID offset 0 rows fetch next 1 row only"
+            };
 
             Contact contact;
 
@@ -733,19 +792,26 @@ namespace test_task.DB
         /// </summary>
         /// <param name="query">Query itself</param>
         /// <returns>rows affected</returns>
-        public static int DirectQuery(string query)
+        public static int DirectQuery(string query, bool showMessage = false)
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
             SqlCommand sqlCmd = new SqlCommand();
             
             sqlCmd.Connection = cn;
-            sqlCmd.CommandText = $"{query}";
+            sqlCmd.CommandText = query;
 
             int rowsAffected = - 2;
 
-            DialogResult dialogResult = MessageBox.Show($"{query}",
-                                                        $"Execute?",
-                                                        MessageBoxButtons.YesNo);
+            DialogResult dialogResult;
+
+            if (showMessage)
+            {
+                dialogResult = MessageBox.Show($"{query}", $"Execute?", MessageBoxButtons.YesNo);
+            }
+            else
+            {
+                dialogResult = DialogResult.Yes;
+            }
 
             if (dialogResult == DialogResult.No)
             {
@@ -760,7 +826,10 @@ namespace test_task.DB
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                if (showMessage)
+                {
+                    MessageBox.Show(ex.Message + "\n" + sqlCmd.CommandText);
+                }
             }
             finally
             {
@@ -774,7 +843,7 @@ namespace test_task.DB
         /// </summary>
         /// <param name="query">Query itself</param>
         /// <returns>List of rows</returns>
-        public static List<string> DirectQueryR(string query)
+        public static List<string> DirectQueryR(string query, bool showMessage = true)
         {
             SqlConnection cn = new SqlConnection(ConnectionString);
             SqlCommand sqlCmd = new SqlCommand();
@@ -786,9 +855,16 @@ namespace test_task.DB
             sqlCmd.Connection = cn;
             sqlCmd.CommandText = $"{query}";
 
-            DialogResult dialogResult = MessageBox.Show($"{query}",
-                                                        $"Execute?",
-                                                        MessageBoxButtons.YesNo);
+            DialogResult dialogResult;
+
+            if (showMessage)
+            {
+                dialogResult = MessageBox.Show($"{query}", $"Execute?", MessageBoxButtons.YesNo);
+            }
+            else
+            {
+                dialogResult = DialogResult.Yes;
+            }
 
             if (dialogResult == DialogResult.No)
             {
@@ -804,7 +880,7 @@ namespace test_task.DB
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        s += " || " + reader[i].ToString() + " || ";
+                        s += "||" + reader[i].ToString() + "||";
                     }
                     outList.Add(s);
                     s = "";
@@ -813,7 +889,10 @@ namespace test_task.DB
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                if (showMessage)
+                {
+                    MessageBox.Show(ex.Message + "\n" + sqlCmd.CommandText);
+                }
             }
             finally
             {

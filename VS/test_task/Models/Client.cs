@@ -34,9 +34,8 @@ namespace test_task.Classes
             this.Comment = client.Comment;
         }
 
-        public bool Edited() => !(Name == "-" || Name == "" || string.IsNullOrEmpty(Name) 
-            & (Comment == "dummy" || Comment == "" || string.IsNullOrEmpty(Comment)) 
-            & PriorClient == false);
+        public bool Edited() => !(Name == "-" || Name == "" || string.IsNullOrEmpty(Name)
+            & (Comment == "dummy" || Comment == "" || string.IsNullOrEmpty(Comment)));
 
         #region IConvertible
         string IConvertible.ToString(IFormatProvider provider)
@@ -59,7 +58,6 @@ namespace test_task.Classes
             {
                 return Convert.ChangeType(ToString(), conversionType);
             }
-            //return Convert.ChangeType(ToString(), conversionType);
         }
 
         public TypeCode GetTypeCode()

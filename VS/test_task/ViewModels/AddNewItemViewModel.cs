@@ -102,6 +102,14 @@ namespace test_task.ViewModels
             list.Add(CreatedObject);
             try
             {
+                if ((CreatedObject.GetType().Name == "Product") && (CreatedObject as Product).Subscribtion == true)
+                {
+                    int per = (CreatedObject as Product).Period.Value;
+                    if (per != 1 & per != 3 & per != 12)
+                    {
+                        throw new ArgumentNullException();
+                    }
+                }
                 DB.DBOperator.InsertData(list);
             }
 
@@ -123,7 +131,7 @@ namespace test_task.ViewModels
         public void CancelButtonClick()
         {
             CViewModel.EnableDataGrid();
-            ActivateItem(null);
+            CViewModel.ActivateItem(null);
         }
         #endregion
 

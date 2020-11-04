@@ -45,7 +45,14 @@ namespace test_task.Classes
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
-            return Convert.ChangeType(ToString(), conversionType);
+            if (conversionType.Name == "Manager")
+            {
+                return this;
+            }
+            else
+            {
+                return Convert.ChangeType(ToString(), conversionType);
+            }
         }
 
         public TypeCode GetTypeCode()
